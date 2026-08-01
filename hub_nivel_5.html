@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level 5 Hub | Teacher Netza</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Paleta Premium */
+            --primary: #124743; /* Tu color principal */
+            --primary-light: #1c6b65;
+            --accent: #f59e0b; /* Acento dorado/ámbar para Nivel 5 */
+            --accent-glow: rgba(245, 158, 11, 0.4);
+            
+            /* Fondo Ambient (Ni blanco ni oscuro) */
+            --bg-base: #eef2f5; 
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            
+            /* Glassmorphism */
+            --glass-bg: rgba(255, 255, 255, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --glass-shadow: 0 8px 32px 0 rgba(18, 71, 67, 0.1);
+
+            /* Tipografía */
+            --font-heading: 'Outfit', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .ambient-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            background: radial-gradient(circle at top left, #ffffff, transparent);
+        }
+        
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+            animation: float 15s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .orb-1 {
+            width: 40vw; height: 40vw;
+            background: rgba(20, 184, 166, 0.4); /* Menta */
+            top: -10%; left: -10%;
+        }
+        
+        .orb-2 {
+            width: 50vw; height: 50vw;
+            background: rgba(18, 71, 67, 0.2); /* Tu verde principal suave */
+            bottom: -20%; right: -10%;
+            animation-delay: -5s;
+            animation-duration: 20s;
+        }
+
+        .orb-3 {
+            width: 30vw; height: 30vw;
+            background: rgba(245, 158, 11, 0.15); /* Acento ámbar */
+            top: 40%; left: 40%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(5%, 10%) scale(1.1); }
+            100% { transform: translate(-5%, -5%) scale(0.9); }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 5rem;
+            animation: fadeDown 1s ease-out;
+        }
+
+        .level-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border-radius: 100px;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 25px rgba(18, 71, 67, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .level-badge svg { color: var(--accent); }
+
+        .hero-title {
+            font-family: var(--font-heading);
+            font-size: clamp(3rem, 6vw, 4.5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .labs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .lab-card {
+            display: block;
+            text-decoration: none;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2.5rem 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: var(--glass-shadow);
+            opacity: 0; /* Inicia oculto para la animación */
+            transform: translateY(30px);
+            animation: fadeUp 0.6s ease-out forwards;
+        }
+
+        /* Efecto de brillo interior (Glow) */
+        .lab-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+            transform: skewX(-25deg);
+            transition: 0.5s;
+            z-index: 1;
+        }
+
+        /* Borde superior de color */
+        .lab-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            opacity: 0;
+            transition: 0.4s;
+        }
+
+        .lab-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(18, 71, 67, 0.15), 
+                        0 0 0 1px rgba(255,255,255,0.8) inset;
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .lab-card:hover::before { left: 200%; }
+        .lab-card:hover::after { opacity: 1; }
+
+        .card-icon-box {
+            width: 60px; height: 60px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(18, 71, 67, 0.1), rgba(18, 71, 67, 0.05));
+            border: 1px solid rgba(255,255,255,0.5);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            transition: 0.4s;
+            position: relative;
+            z-index: 2;
+        }
+
+        .lab-card:hover .card-icon-box {
+            background: var(--primary);
+            color: white;
+            transform: rotate(-5deg) scale(1.1);
+            box-shadow: 0 10px 20px rgba(18, 71, 67, 0.2);
+        }
+
+        .card-title {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-desc {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-action {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            color: var(--primary-light);
+            font-family: var(--font-heading);
+            font-size: 0.95rem;
+            position: relative;
+            z-index: 2;
+            transition: 0.3s;
+        }
+
+        .card-action svg {
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .lab-card:hover .card-action { color: var(--primary); }
+        .lab-card:hover .card-action svg { transform: translateX(8px); }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, rgba(255,255,255,0.3) 25%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0.3) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 5rem 2rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 2px dashed rgba(18, 71, 67, 0.2);
+            border-radius: 24px;
+            animation: fadeUp 0.6s ease-out;
+        }
+        
+        .empty-state h3 { font-family: var(--font-heading); font-size: 1.8rem; color: var(--primary); margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <main class="container">
+        <section class="hero-section">
+            <div class="level-badge">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+                Level 5
+            </div>
+            <h1 class="hero-title">Advanced<br>Practice Hub</h1>
+            <p class="hero-subtitle">Bienvenido a la zona de alto rendimiento. Selecciona una práctica interactiva y lleva tu fluidez al siguiente nivel.</p>
+        </section>
+
+        <section>
+            <div class="labs-grid" id="labsContainer">
+                <!-- Las tarjetas se inyectan aquí con JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const GITHUB_CONFIG = {
+            owner: 'teachernetza',
+            repo: 'teachernetza',
+            folder: 'level-5'
+        };
+
+        const labsContainer = document.getElementById('labsContainer');
+
+        // Formateador elegante de nombres
+        function formatLabTitle(filename) {
+            let clean = filename.replace(/\.html$/i, '');
+            clean = clean.replace(/-/g, ' ');
+            // Capitalizar cada palabra
+            clean = clean.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+            // Resaltar "Class X:"
+            clean = clean.replace(/^(Class \d+)\s/i, '$1: ');
+            return clean;
+        }
+
+        // Renderizar esqueletos mientras carga
+        function renderSkeletons() {
+            labsContainer.innerHTML = '';
+            for(let i=0; i<3; i++) {
+                labsContainer.innerHTML += `
+                    <div class="lab-card" style="animation-delay: ${i * 0.1}s; opacity: 1; transform: none; animation: none;">
+                        <div class="skeleton" style="width: 60px; height: 60px; border-radius: 16px; margin-bottom: 1.5rem;"></div>
+                        <div class="skeleton" style="width: 80%; height: 32px; margin-bottom: 0.75rem;"></div>
+                        <div class="skeleton" style="width: 100%; height: 16px; margin-bottom: 0.5rem;"></div>
+                        <div class="skeleton" style="width: 60%; height: 16px; margin-bottom: 2rem;"></div>
+                        <div class="skeleton" style="width: 140px; height: 20px;"></div>
+                    </div>
+                `;
+            }
+        }
+
+        // Estado vacío premium
+        function showEmptyState() {
+            labsContainer.innerHTML = `
+                <div class="empty-state">
+                    <div style="width: 80px; height: 80px; margin: 0 auto 1.5rem; background: rgba(18, 71, 67, 0.05); border-radius: 20px; display: flex; align-items: center; justify-content: center; color: var(--primary);">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                    </div>
+                    <h3>Próximamente</h3>
+                    <p style="color: var(--text-muted); max-width: 400px; margin: 0 auto;">Teacher Netza está preparando el material interactivo para este nivel. Vuelve pronto para descubrir nuevas prácticas.</p>
+                </div>
+            `;
+        }
+
+        async function fetchLevelLabs() {
+            renderSkeletons();
+            
+            try {
+                const url = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.folder}`;
+                const res = await fetch(url);
+                
+                if (!res.ok) throw new Error('Carpeta no encontrada o vacía');
+                
+                const data = await res.json();
+                
+                // Filtrar solo HTMLs, omitiendo este mismo index.html
+                const htmlFiles = data.filter(file => 
+                    file.type === 'file' && 
+                    file.name.endsWith('.html') && 
+                    file.name.toLowerCase() !== 'index.html'
+                );
+
+                if (htmlFiles.length === 0) {
+                    showEmptyState();
+                    return;
+                }
+
+                labsContainer.innerHTML = '';
+                
+                // Construir tarjetas con retraso en la animación
+                htmlFiles.forEach((file, index) => {
+                    const title = formatLabTitle(file.name);
+                    const delay = index * 0.15; // Retraso escalonado
+                    
+                    const card = document.createElement('a');
+                    card.href = file.name; 
+                    card.className = 'lab-card';
+                    card.style.animationDelay = `${delay}s`;
+                    
+                    card.innerHTML = `
+                        <div class="card-icon-box">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                            </svg>
+                        </div>
+                        <h3 class="card-title">${title}</h3>
+                        <p class="card-desc">Completa este laboratorio para reforzar la estructura y vocabulario de la sesión.</p>
+                        <div class="card-action">
+                            <span>Comenzar práctica</span>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </div>
+                    `;
+                    labsContainer.appendChild(card);
+                });
+
+            } catch (error) {
+                console.error("Error fetching labs:", error);
+                showEmptyState();
+            }
+        }
+
+        // Iniciar
+        window.addEventListener('DOMContentLoaded', fetchLevelLabs);
+    </script>
+</body>
+</html>
