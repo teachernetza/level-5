@@ -320,7 +320,9 @@
         const GITHUB_CONFIG = {
             owner: 'teachernetza',
             repo: 'teachernetza',
-            folder: 'level-5'
+            // Asegúrate de que este nombre coincida EXACTAMENTE con como nombraste la carpeta en GitHub.
+            // Si le pusiste espacio ("level five"), ponlo así. Te recomiendo usar guiones ("level-5").
+            folder: 'level-5' 
         };
 
         const labsContainer = document.getElementById('labsContainer');
@@ -396,7 +398,9 @@
                     const delay = index * 0.15; // Retraso escalonado
                     
                     const card = document.createElement('a');
-                    card.href = file.name; 
+                    // AL ESTAR AFUERA: Usamos file.path en lugar de file.name
+                    // Esto genera la ruta correcta: "level-5/nombre-del-archivo.html"
+                    card.href = file.path; 
                     card.className = 'lab-card';
                     card.style.animationDelay = `${delay}s`;
                     
